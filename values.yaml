@@ -1,0 +1,117 @@
+global:
+  storageClass: "storage-crm"
+  app: "crm"
+
+
+
+app:
+
+
+  name: crm-deployment
+
+  ports:
+    containerPort: 3000
+  
+  image: "us-central1-docker.pkg.dev/zeta-sol-344010/crm-repo/demo-crm"
+  replicaCount: 3
+  appName: crm
+
+  resources:
+
+    requests:
+      memory: "128Mi"
+      cpu:  "250m"
+      ephemeralStorage: "1Gi"
+    
+    limits:
+      memory: "128Mi"
+      cpu:  "500m"
+      ephemeralStorage: "2Gi"
+
+  env:
+    confMapRef:
+      name: mongo-config
+    
+    mongoURL:
+      name: mongo-url
+      
+      secretKeyRef:
+        name: mongo-secret
+        key:  mongo-url
+
+
+
+
+ingress:
+
+
+  name: crm-ingress
+
+  labels:
+    name: crm-ingress
+
+  annotations:
+     ingressClass: "nginx"
+
+  hosts:
+    host: nathancowsay.tk
+    pathType: Prefix
+    path: "/"
+
+    service:
+      name: crm-service
+      port: 3000
+  tls: []
+
+
+secrets:
+
+
+  name: mongo-secret
+  type: Opaque
+
+  data:
+    mongoUser: bW9uZ291c2Vy #mongouser
+    mongoPassword: bW9uZ29wYXNzd29yZA== #mongopassword
+    mongoUrl: "bW9uZ29kYjovL21vbmdvdXNlcjptb25nb3Bhc3N3b3JkQGNybS1tb25nb2RiLTAuY3JtLW1vbmdvZGItaGVhZGxlc3M6MjcwMTcsY3JtLW1vbmdvZGItMS5jcm0tbW9uZ29kYi1oZWFkbGVzczoyNzAxNyxjcm0tbW9uZ29kYi0yLmNybS1tb25nb2RiLWhlYWRsZXNzOjI3MDE3L2NybWRi"
+
+
+
+config:
+
+
+  name: mongo-config
+
+  data:
+    mongoUri:     "mongodb://mongouser:mongopassword@crm-mongodb-0.crm-mongodb-headless:27017,crm-mongodb-1.crm-mongodb-headless:27017,crm-mongodb-2.crm-mongodb-headless:27017/crmdb"
+    logLevel:     "info"
+    PERSISTENCE:  "true"
+
+
+service:
+
+
+  name: crm-service
+  type: ClusterIP
+
+  ports:
+    protocol: TCP
+    port: 3000
+    targetPort: 3000
+
+
+storage:
+
+
+  name: storage-crm
+  
+  provisioner: kubernetes.io/gce-pd
+
+  parameters:
+    type: pd-ssd
+    fstype: ext4
+    replicationType: none
+
+
+clean:
+  command:  db.

@@ -1,0 +1,19 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: daily-user-cleanup
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:       
+          containers:
+          - name: db-cleanup
+            image: mongo:4.4.13
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/bash
+            - -c
+            - mongo crmdb --eval 'db.getCollectionNames().forEach(c=>db[c].drop())'  --host crm-mongodb-0.crm-mongodb-headless -u mongouser -p mongopassword
+          restartPolicy: Never
