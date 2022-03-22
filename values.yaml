@@ -83,7 +83,7 @@ config:
   name: mongo-config
 
   data:
-    mongoUri:     "mongodb://mongouser:mongopassword@crm-mongodb-0.crm-mongodb-headless:27017,crm-mongodb-1.crm-mongodb-headless:27017,crm-mongodb-2.crm-mongodb-headless:27017/crmdb"
+    mongoUri:     "mongodb://mongouser:mongopassword@argo-crm-mongodb-0.argo-crm-mongodb-headless:27017,argo-crm-mongodb-1.argo-crm-mongodb-headless:27017,argo-crm-mongodb-2.argo-crm-mongodb-headless:27017/crmdb"
     logLevel:     "info"
     PERSISTENCE:  "true"
 
@@ -111,7 +111,3 @@ storage:
     type: pd-ssd
     fstype: ext4
     replicationType: none
-
-
-clean:
-  command:  db.

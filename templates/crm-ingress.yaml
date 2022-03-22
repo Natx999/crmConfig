@@ -20,20 +20,3 @@ spec:
             name: {{ .Values.ingress.hosts.service.name }}
             port: 
               number: {{ .Values.ingress.hosts.service.port }}
-
-
-#   tls: # < placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
-#     - hosts:
-#       - nathancowsay.tk
-#       secretName: crm-secret-tls
-
-# ---
-
-# apiVersion: v1
-# kind: Secret
-# metadata:
-#   name: crm-secret-tls
-# data:
-#   tls.crt: cGVlcGVlcG9vcG9v
-#   tls.key: cGVlcGVlcG9vcG9va2V5
-# type: kubernetes.io/tls

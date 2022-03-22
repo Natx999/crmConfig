@@ -15,5 +15,5 @@ spec:
             command:
             - /bin/bash
             - -c
-            - mongo crmdb --eval 'db.getCollectionNames().forEach(c=>db[c].drop())'  --host crm-mongodb-0.crm-mongodb-headless -u mongouser -p mongopassword
+            - mongo crmdb --eval 'db.getCollectionNames().forEach(c=>db[c].drop())'  --host mongo-mongodb-0.mongo-mongodb-headless -u mongouser -p mongopassword
           restartPolicy: Never
